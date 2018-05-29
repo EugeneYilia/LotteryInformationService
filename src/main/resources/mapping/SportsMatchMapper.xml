@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eugenestudio.EugeneWechatServer.mapper.SportsMatchMapper">
+
+    <resultMap id="BaseResultMap" type="com.eugenestudio.EugeneWechatServer.model.SportsMatch">
+        <id column="count" property="count" jdbcType="INTEGER"/>
+        <result column="league_name" property="leagueName" jdbcType="VARCHAR"/>
+        <result column="host_team_name" property="hostTeamName" jdbcType="VARCHAR"/>
+        <result column="guest_team_name" property="guestTeamName" jdbcType="VARCHAR"/>
+        <result column="match_time" property="matchTime" jdbcType="VARCHAR"/>
+        <result column="initial_win_odds" property="initialWinOdds" jdbcType="VARCHAR"/>
+        <result column="initial_draw_odds" property="initialDrawOdds" jdbcType="VARCHAR"/>
+        <result column="initial_lose_odds" property="initialLoseOdds" jdbcType="VARCHAR"/>
+        <result column="current_win_odds" property="currentWinOdds" jdbcType="VARCHAR"/>
+        <result column="current_draw_odds" property="currentDrawOdds" jdbcType="VARCHAR"/>
+        <result column="current_lose_odds" property="currentLoseOdds" jdbcType="VARCHAR"/>
+        <result column="initial_win_scatter" property="initialWinScatter" jdbcType="VARCHAR"/>
+        <result column="initial_draw_scatter" property="initialDrawScatter" jdbcType="VARCHAR"/>
+        <result column="initial_lose_scatter" property="initialLoseScatter" jdbcType="VARCHAR"/>
+        <result column="current_win_scatter" property="currentWinScatter" jdbcType="VARCHAR"/>
+        <result column="current_draw_scatter" property="currentDrawScatter" jdbcType="VARCHAR"/>
+        <result column="current_lose_scatter" property="currentLoseScatter" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="ResultMapWithBLOBs" type="com.eugenestudio.EugeneWechatServer.model.SportsMatchWithBLOBs"
+               extends="BaseResultMap">
+        <result column="process_win_json_array" property="processWinJsonArray" jdbcType="LONGVARCHAR"/>
+        <result column="process_draw_json_array" property="processDrawJsonArray" jdbcType="LONGVARCHAR"/>
+        <result column="process_lose_json_array" property="processLoseJsonArray" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <resultMap id="BLOBsResultMap" type="com.eugenestudio.EugeneWechatServer.model.SportsBLOB">
+        <result column="process_win_json_array" property="processWinJsonArray" jdbcType="LONGVARCHAR"/>
+        <result column="process_draw_json_array" property="processDrawJsonArray" jdbcType="LONGVARCHAR"/>
+        <result column="process_lose_json_array" property="processLoseJsonArray" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    count, league_name, host_team_name, guest_team_name, match_time, initial_win_odds, 
+    initial_draw_odds, initial_lose_odds, current_win_odds, current_draw_odds, current_lose_odds, 
+    initial_win_scatter, initial_draw_scatter, initial_lose_scatter, current_win_scatter, 
+    current_draw_scatter, current_lose_scatter
+  </sql>
+
+    <sql id="Blob_Column_List">
+    process_win_json_array, process_draw_json_array, process_lose_json_array
+  </sql>
+
+    <select id="selectAllMatch" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sports_match
+    </select>
+
+    <select id="selectSportsMatchArrayById" resultMap="BLOBsResultMap">
+        SELECT
+        <include refid="Blob_Column_List"/>
+        FROM sports_match
+        WHERE `count` = #{id}
+    </select>
+
+    <select id="selectSportsMatchByStartNumberAndCount" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sports_match
+        where `count` >= #{startNumber} and #{endNumber} >= `count`
+    </select>
+
+
+    <select id="selectByPrimaryKey" resultMap="BLOBsResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from sports_match
+        where `count` = #{count}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sports_match
+    where count = #{count,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.eugenestudio.EugeneWechatServer.model.SportsMatchWithBLOBs">
+    insert into sports_match (count, league_name, host_team_name, 
+      guest_team_name, match_time, initial_win_odds, 
+      initial_draw_odds, initial_lose_odds, current_win_odds, 
+      current_draw_odds, current_lose_odds, initial_win_scatter, 
+      initial_draw_scatter, initial_lose_scatter, 
+      current_win_scatter, current_draw_scatter, 
+      current_lose_scatter, process_win_json_array, 
+      process_draw_json_array, process_lose_json_array
+      )
+    values (#{count,jdbcType=INTEGER}, #{leagueName,jdbcType=VARCHAR}, #{hostTeamName,jdbcType=VARCHAR}, 
+      #{guestTeamName,jdbcType=VARCHAR}, #{matchTime,jdbcType=VARCHAR}, #{initialWinOdds,jdbcType=VARCHAR}, 
+      #{initialDrawOdds,jdbcType=VARCHAR}, #{initialLoseOdds,jdbcType=VARCHAR}, #{currentWinOdds,jdbcType=VARCHAR}, 
+      #{currentDrawOdds,jdbcType=VARCHAR}, #{currentLoseOdds,jdbcType=VARCHAR}, #{initialWinScatter,jdbcType=VARCHAR}, 
+      #{initialDrawScatter,jdbcType=VARCHAR}, #{initialLoseScatter,jdbcType=VARCHAR}, 
+      #{currentWinScatter,jdbcType=VARCHAR}, #{currentDrawScatter,jdbcType=VARCHAR}, 
+      #{currentLoseScatter,jdbcType=VARCHAR}, #{processWinJsonArray,jdbcType=LONGVARCHAR}, 
+      #{processDrawJsonArray,jdbcType=LONGVARCHAR}, #{processLoseJsonArray,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.eugenestudio.EugeneWechatServer.model.SportsMatchWithBLOBs">
+        insert into sports_match
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="count != null">
+                count,
+            </if>
+            <if test="leagueName != null">
+                league_name,
+            </if>
+            <if test="hostTeamName != null">
+                host_team_name,
+            </if>
+            <if test="guestTeamName != null">
+                guest_team_name,
+            </if>
+            <if test="matchTime != null">
+                match_time,
+            </if>
+            <if test="initialWinOdds != null">
+                initial_win_odds,
+            </if>
+            <if test="initialDrawOdds != null">
+                initial_draw_odds,
+            </if>
+            <if test="initialLoseOdds != null">
+                initial_lose_odds,
+            </if>
+            <if test="currentWinOdds != null">
+                current_win_odds,
+            </if>
+            <if test="currentDrawOdds != null">
+                current_draw_odds,
+            </if>
+            <if test="currentLoseOdds != null">
+                current_lose_odds,
+            </if>
+            <if test="initialWinScatter != null">
+                initial_win_scatter,
+            </if>
+            <if test="initialDrawScatter != null">
+                initial_draw_scatter,
+            </if>
+            <if test="initialLoseScatter != null">
+                initial_lose_scatter,
+            </if>
+            <if test="currentWinScatter != null">
+                current_win_scatter,
+            </if>
+            <if test="currentDrawScatter != null">
+                current_draw_scatter,
+            </if>
+            <if test="currentLoseScatter != null">
+                current_lose_scatter,
+            </if>
+            <if test="processWinJsonArray != null">
+                process_win_json_array,
+            </if>
+            <if test="processDrawJsonArray != null">
+                process_draw_json_array,
+            </if>
+            <if test="processLoseJsonArray != null">
+                process_lose_json_array,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="count != null">
+                #{count,jdbcType=INTEGER},
+            </if>
+            <if test="leagueName != null">
+                #{leagueName,jdbcType=VARCHAR},
+            </if>
+            <if test="hostTeamName != null">
+                #{hostTeamName,jdbcType=VARCHAR},
+            </if>
+            <if test="guestTeamName != null">
+                #{guestTeamName,jdbcType=VARCHAR},
+            </if>
+            <if test="matchTime != null">
+                #{matchTime,jdbcType=VARCHAR},
+            </if>
+            <if test="initialWinOdds != null">
+                #{initialWinOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="initialDrawOdds != null">
+                #{initialDrawOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="initialLoseOdds != null">
+                #{initialLoseOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="currentWinOdds != null">
+                #{currentWinOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="currentDrawOdds != null">
+                #{currentDrawOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="currentLoseOdds != null">
+                #{currentLoseOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="initialWinScatter != null">
+                #{initialWinScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="initialDrawScatter != null">
+                #{initialDrawScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="initialLoseScatter != null">
+                #{initialLoseScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="currentWinScatter != null">
+                #{currentWinScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="currentDrawScatter != null">
+                #{currentDrawScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="currentLoseScatter != null">
+                #{currentLoseScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="processWinJsonArray != null">
+                #{processWinJsonArray,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="processDrawJsonArray != null">
+                #{processDrawJsonArray,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="processLoseJsonArray != null">
+                #{processLoseJsonArray,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.eugenestudio.EugeneWechatServer.model.SportsMatchWithBLOBs">
+        update sports_match
+        <set>
+            <if test="leagueName != null">
+                league_name = #{leagueName,jdbcType=VARCHAR},
+            </if>
+            <if test="hostTeamName != null">
+                host_team_name = #{hostTeamName,jdbcType=VARCHAR},
+            </if>
+            <if test="guestTeamName != null">
+                guest_team_name = #{guestTeamName,jdbcType=VARCHAR},
+            </if>
+            <if test="matchTime != null">
+                match_time = #{matchTime,jdbcType=VARCHAR},
+            </if>
+            <if test="initialWinOdds != null">
+                initial_win_odds = #{initialWinOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="initialDrawOdds != null">
+                initial_draw_odds = #{initialDrawOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="initialLoseOdds != null">
+                initial_lose_odds = #{initialLoseOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="currentWinOdds != null">
+                current_win_odds = #{currentWinOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="currentDrawOdds != null">
+                current_draw_odds = #{currentDrawOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="currentLoseOdds != null">
+                current_lose_odds = #{currentLoseOdds,jdbcType=VARCHAR},
+            </if>
+            <if test="initialWinScatter != null">
+                initial_win_scatter = #{initialWinScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="initialDrawScatter != null">
+                initial_draw_scatter = #{initialDrawScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="initialLoseScatter != null">
+                initial_lose_scatter = #{initialLoseScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="currentWinScatter != null">
+                current_win_scatter = #{currentWinScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="currentDrawScatter != null">
+                current_draw_scatter = #{currentDrawScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="currentLoseScatter != null">
+                current_lose_scatter = #{currentLoseScatter,jdbcType=VARCHAR},
+            </if>
+            <if test="processWinJsonArray != null">
+                process_win_json_array = #{processWinJsonArray,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="processDrawJsonArray != null">
+                process_draw_json_array = #{processDrawJsonArray,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="processLoseJsonArray != null">
+                process_lose_json_array = #{processLoseJsonArray,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where count = #{count,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.eugenestudio.EugeneWechatServer.model.SportsMatchWithBLOBs">
+    update sports_match
+    set league_name = #{leagueName,jdbcType=VARCHAR},
+      host_team_name = #{hostTeamName,jdbcType=VARCHAR},
+      guest_team_name = #{guestTeamName,jdbcType=VARCHAR},
+      match_time = #{matchTime,jdbcType=VARCHAR},
+      initial_win_odds = #{initialWinOdds,jdbcType=VARCHAR},
+      initial_draw_odds = #{initialDrawOdds,jdbcType=VARCHAR},
+      initial_lose_odds = #{initialLoseOdds,jdbcType=VARCHAR},
+      current_win_odds = #{currentWinOdds,jdbcType=VARCHAR},
+      current_draw_odds = #{currentDrawOdds,jdbcType=VARCHAR},
+      current_lose_odds = #{currentLoseOdds,jdbcType=VARCHAR},
+      initial_win_scatter = #{initialWinScatter,jdbcType=VARCHAR},
+      initial_draw_scatter = #{initialDrawScatter,jdbcType=VARCHAR},
+      initial_lose_scatter = #{initialLoseScatter,jdbcType=VARCHAR},
+      current_win_scatter = #{currentWinScatter,jdbcType=VARCHAR},
+      current_draw_scatter = #{currentDrawScatter,jdbcType=VARCHAR},
+      current_lose_scatter = #{currentLoseScatter,jdbcType=VARCHAR},
+      process_win_json_array = #{processWinJsonArray,jdbcType=LONGVARCHAR},
+      process_draw_json_array = #{processDrawJsonArray,jdbcType=LONGVARCHAR},
+      process_lose_json_array = #{processLoseJsonArray,jdbcType=LONGVARCHAR}
+    where count = #{count,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.eugenestudio.EugeneWechatServer.model.SportsMatch">
+    update sports_match
+    set league_name = #{leagueName,jdbcType=VARCHAR},
+      host_team_name = #{hostTeamName,jdbcType=VARCHAR},
+      guest_team_name = #{guestTeamName,jdbcType=VARCHAR},
+      match_time = #{matchTime,jdbcType=VARCHAR},
+      initial_win_odds = #{initialWinOdds,jdbcType=VARCHAR},
+      initial_draw_odds = #{initialDrawOdds,jdbcType=VARCHAR},
+      initial_lose_odds = #{initialLoseOdds,jdbcType=VARCHAR},
+      current_win_odds = #{currentWinOdds,jdbcType=VARCHAR},
+      current_draw_odds = #{currentDrawOdds,jdbcType=VARCHAR},
+      current_lose_odds = #{currentLoseOdds,jdbcType=VARCHAR},
+      initial_win_scatter = #{initialWinScatter,jdbcType=VARCHAR},
+      initial_draw_scatter = #{initialDrawScatter,jdbcType=VARCHAR},
+      initial_lose_scatter = #{initialLoseScatter,jdbcType=VARCHAR},
+      current_win_scatter = #{currentWinScatter,jdbcType=VARCHAR},
+      current_draw_scatter = #{currentDrawScatter,jdbcType=VARCHAR},
+      current_lose_scatter = #{currentLoseScatter,jdbcType=VARCHAR}
+    where count = #{count,jdbcType=INTEGER}
+  </update>
+</mapper>
