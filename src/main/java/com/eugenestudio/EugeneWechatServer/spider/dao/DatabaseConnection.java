@@ -11,8 +11,9 @@ public class DatabaseConnection {
     private static Connection connection = null;
 
     private DatabaseConnection(){}
-    public static Connection getConnection(){
-        try {
+    
+    static {
+         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
         } catch (ClassNotFoundException e) {
@@ -20,6 +21,9 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static Connection getConnection(){
         return connection;
     }
 }
