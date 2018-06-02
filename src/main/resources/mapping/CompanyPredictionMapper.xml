@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eugenestudio.EugeneWechatServer.mapper.CompanyPredictionMapper" >
+  <resultMap id="BaseResultMap" type="com.eugenestudio.EugeneWechatServer.model.CompanyPrediction" >
+    <id column="count" property="count" jdbcType="INTEGER" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="tuple_id" property="tupleId" jdbcType="VARCHAR" />
+    <result column="league_name" property="leagueName" jdbcType="VARCHAR" />
+    <result column="host_team_name" property="hostTeamName" jdbcType="VARCHAR" />
+    <result column="guest_team_name" property="guestTeamName" jdbcType="VARCHAR" />
+    <result column="match_time" property="matchTime" jdbcType="VARCHAR" />
+    <result column="initial_win_odds" property="initialWinOdds" jdbcType="VARCHAR" />
+    <result column="initial_draw_odds" property="initialDrawOdds" jdbcType="VARCHAR" />
+    <result column="initial_lose_odds" property="initialLoseOdds" jdbcType="VARCHAR" />
+    <result column="current_win_odds" property="currentWinOdds" jdbcType="VARCHAR" />
+    <result column="current_draw_odds" property="currentDrawOdds" jdbcType="VARCHAR" />
+    <result column="current_lose_odds" property="currentLoseOdds" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    count, company_name, tuple_id, league_name, host_team_name, guest_team_name, match_time, 
+    initial_win_odds, initial_draw_odds, initial_lose_odds, current_win_odds, current_draw_odds, 
+    current_lose_odds
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from company_prediction
+    where count = #{count,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from company_prediction
+    where count = #{count,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.eugenestudio.EugeneWechatServer.model.CompanyPrediction" >
+    insert into company_prediction (count, company_name, tuple_id, 
+      league_name, host_team_name, guest_team_name, 
+      match_time, initial_win_odds, initial_draw_odds, 
+      initial_lose_odds, current_win_odds, current_draw_odds, 
+      current_lose_odds)
+    values (#{count,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, #{tupleId,jdbcType=VARCHAR}, 
+      #{leagueName,jdbcType=VARCHAR}, #{hostTeamName,jdbcType=VARCHAR}, #{guestTeamName,jdbcType=VARCHAR}, 
+      #{matchTime,jdbcType=VARCHAR}, #{initialWinOdds,jdbcType=VARCHAR}, #{initialDrawOdds,jdbcType=VARCHAR}, 
+      #{initialLoseOdds,jdbcType=VARCHAR}, #{currentWinOdds,jdbcType=VARCHAR}, #{currentDrawOdds,jdbcType=VARCHAR}, 
+      #{currentLoseOdds,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eugenestudio.EugeneWechatServer.model.CompanyPrediction" >
+    insert into company_prediction
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="tupleId != null" >
+        tuple_id,
+      </if>
+      <if test="leagueName != null" >
+        league_name,
+      </if>
+      <if test="hostTeamName != null" >
+        host_team_name,
+      </if>
+      <if test="guestTeamName != null" >
+        guest_team_name,
+      </if>
+      <if test="matchTime != null" >
+        match_time,
+      </if>
+      <if test="initialWinOdds != null" >
+        initial_win_odds,
+      </if>
+      <if test="initialDrawOdds != null" >
+        initial_draw_odds,
+      </if>
+      <if test="initialLoseOdds != null" >
+        initial_lose_odds,
+      </if>
+      <if test="currentWinOdds != null" >
+        current_win_odds,
+      </if>
+      <if test="currentDrawOdds != null" >
+        current_draw_odds,
+      </if>
+      <if test="currentLoseOdds != null" >
+        current_lose_odds,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="tupleId != null" >
+        #{tupleId,jdbcType=VARCHAR},
+      </if>
+      <if test="leagueName != null" >
+        #{leagueName,jdbcType=VARCHAR},
+      </if>
+      <if test="hostTeamName != null" >
+        #{hostTeamName,jdbcType=VARCHAR},
+      </if>
+      <if test="guestTeamName != null" >
+        #{guestTeamName,jdbcType=VARCHAR},
+      </if>
+      <if test="matchTime != null" >
+        #{matchTime,jdbcType=VARCHAR},
+      </if>
+      <if test="initialWinOdds != null" >
+        #{initialWinOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="initialDrawOdds != null" >
+        #{initialDrawOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="initialLoseOdds != null" >
+        #{initialLoseOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="currentWinOdds != null" >
+        #{currentWinOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="currentDrawOdds != null" >
+        #{currentDrawOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="currentLoseOdds != null" >
+        #{currentLoseOdds,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eugenestudio.EugeneWechatServer.model.CompanyPrediction" >
+    update company_prediction
+    <set >
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="tupleId != null" >
+        tuple_id = #{tupleId,jdbcType=VARCHAR},
+      </if>
+      <if test="leagueName != null" >
+        league_name = #{leagueName,jdbcType=VARCHAR},
+      </if>
+      <if test="hostTeamName != null" >
+        host_team_name = #{hostTeamName,jdbcType=VARCHAR},
+      </if>
+      <if test="guestTeamName != null" >
+        guest_team_name = #{guestTeamName,jdbcType=VARCHAR},
+      </if>
+      <if test="matchTime != null" >
+        match_time = #{matchTime,jdbcType=VARCHAR},
+      </if>
+      <if test="initialWinOdds != null" >
+        initial_win_odds = #{initialWinOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="initialDrawOdds != null" >
+        initial_draw_odds = #{initialDrawOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="initialLoseOdds != null" >
+        initial_lose_odds = #{initialLoseOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="currentWinOdds != null" >
+        current_win_odds = #{currentWinOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="currentDrawOdds != null" >
+        current_draw_odds = #{currentDrawOdds,jdbcType=VARCHAR},
+      </if>
+      <if test="currentLoseOdds != null" >
+        current_lose_odds = #{currentLoseOdds,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where count = #{count,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eugenestudio.EugeneWechatServer.model.CompanyPrediction" >
+    update company_prediction
+    set company_name = #{companyName,jdbcType=VARCHAR},
+      tuple_id = #{tupleId,jdbcType=VARCHAR},
+      league_name = #{leagueName,jdbcType=VARCHAR},
+      host_team_name = #{hostTeamName,jdbcType=VARCHAR},
+      guest_team_name = #{guestTeamName,jdbcType=VARCHAR},
+      match_time = #{matchTime,jdbcType=VARCHAR},
+      initial_win_odds = #{initialWinOdds,jdbcType=VARCHAR},
+      initial_draw_odds = #{initialDrawOdds,jdbcType=VARCHAR},
+      initial_lose_odds = #{initialLoseOdds,jdbcType=VARCHAR},
+      current_win_odds = #{currentWinOdds,jdbcType=VARCHAR},
+      current_draw_odds = #{currentDrawOdds,jdbcType=VARCHAR},
+      current_lose_odds = #{currentLoseOdds,jdbcType=VARCHAR}
+    where count = #{count,jdbcType=INTEGER}
+  </update>
+</mapper>
