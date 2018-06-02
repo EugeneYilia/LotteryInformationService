@@ -1,2 +1,2 @@
 # LotteryInformationFetcher
-The lottery information service.
+The service part of in lottery application.
