@@ -9,6 +9,13 @@ public class UserInformation {
 
     private String lastSignIn;
 
+    public UserInformation(String openid, int continuousDays, int score, String lastSignIn) {
+        this.id = openid;
+        this.continuousDays = continuousDays;
+        this.score = score;
+        this.lastSignIn = lastSignIn;
+    }
+
     public String getId() {
         return id;
     }

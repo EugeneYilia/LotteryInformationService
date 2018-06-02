@@ -1,78 +1,112 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.eugenestudio.EugeneWechatServer.mapper.UserInformationMapper" >
-  <resultMap id="BaseResultMap" type="com.eugenestudio.EugeneWechatServer.model.UserInformation" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="continuous_days" property="continuousDays" jdbcType="INTEGER" />
-    <result column="score" property="score" jdbcType="INTEGER" />
-    <result column="last_sign_in" property="lastSignIn" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.eugenestudio.EugeneWechatServer.mapper.UserInformationMapper">
+    <resultMap id="BaseResultMap" type="com.eugenestudio.EugeneWechatServer.model.UserInformation">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="continuous_days" property="continuousDays" jdbcType="INTEGER"/>
+        <result column="score" property="score" jdbcType="INTEGER"/>
+        <result column="last_sign_in" property="lastSignIn" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, continuous_days, score, last_sign_in
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from user_information
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <select id="getNewestDate" resultType="java.lang.String">
+        select
+        last_sign_in
+        from
+        user_information
+        where
+        id = #{openid}
+    </select>
+    <select id="getScore" resultType="java.lang.Integer">
+        select
+        score
+        from
+        user_information
+        where id = #{openid}
+    </select>
+    <select id="getContinuousDays" resultType="java.lang.Integer">
+        select
+        continuous_days
+        from
+        user_information
+        where id = #{openid}
+    </select>
+    <select id="getDifferenceOfDate" resultType="java.lang.Integer">
+        SELECT DATEDIFF(
+        #{todayDate},
+        #{lastSignInDate}
+        )
+    </select>
+    <select id="isNew" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from user_information
+        where id = #{openid,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from user_information
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from user_information
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eugenestudio.EugeneWechatServer.model.UserInformation" >
+    <insert id="insert" parameterType="com.eugenestudio.EugeneWechatServer.model.UserInformation">
     insert into user_information (id, continuous_days, score, 
       last_sign_in)
     values (#{id,jdbcType=VARCHAR}, #{continuousDays,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, 
       #{lastSignIn,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.eugenestudio.EugeneWechatServer.model.UserInformation" >
-    insert into user_information
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="continuousDays != null" >
-        continuous_days,
-      </if>
-      <if test="score != null" >
-        score,
-      </if>
-      <if test="lastSignIn != null" >
-        last_sign_in,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="continuousDays != null" >
-        #{continuousDays,jdbcType=INTEGER},
-      </if>
-      <if test="score != null" >
-        #{score,jdbcType=INTEGER},
-      </if>
-      <if test="lastSignIn != null" >
-        #{lastSignIn,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.eugenestudio.EugeneWechatServer.model.UserInformation" >
-    update user_information
-    <set >
-      <if test="continuousDays != null" >
-        continuous_days = #{continuousDays,jdbcType=INTEGER},
-      </if>
-      <if test="score != null" >
-        score = #{score,jdbcType=INTEGER},
-      </if>
-      <if test="lastSignIn != null" >
-        last_sign_in = #{lastSignIn,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.eugenestudio.EugeneWechatServer.model.UserInformation" >
+    <insert id="insertSelective" parameterType="com.eugenestudio.EugeneWechatServer.model.UserInformation">
+        insert into user_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="continuousDays != null">
+                continuous_days,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="lastSignIn != null">
+                last_sign_in,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="continuousDays != null">
+                #{continuousDays,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                #{score,jdbcType=INTEGER},
+            </if>
+            <if test="lastSignIn != null">
+                #{lastSignIn,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.eugenestudio.EugeneWechatServer.model.UserInformation">
+        update user_information
+        <set>
+            <if test="continuousDays != null">
+                continuous_days = #{continuousDays,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                score = #{score,jdbcType=INTEGER},
+            </if>
+            <if test="lastSignIn != null">
+                last_sign_in = #{lastSignIn,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.eugenestudio.EugeneWechatServer.model.UserInformation">
     update user_information
     set continuous_days = #{continuousDays,jdbcType=INTEGER},
       score = #{score,jdbcType=INTEGER},
