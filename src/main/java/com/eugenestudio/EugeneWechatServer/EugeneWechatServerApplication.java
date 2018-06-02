@@ -11,37 +11,59 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.annotation.Bean;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 
-
 @SpringBootApplication
 @MapperScan("com.eugenestudio.EugeneWechatServer.mapper")
 public class EugeneWechatServerApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(EugeneWechatServerApplication.class, args);
-	}
+    //public static int count = 0;
 
-	@Bean
-	public EmbeddedServletContainerFactory servletContainer(){
-		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory(){
-			@Override
-			protected void postProcessContext(Context context) {
-				SecurityConstraint securityConstraint = new SecurityConstraint();
-				securityConstraint.setUserConstraint("CONFIDENTIAL");
+    public static void main(String[] args) {
+
+        SpringApplication.run(EugeneWechatServerApplication.class, args);
+
+        /*//开启springboot服务
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SpringApplication.run(EugeneWechatServerApplication.class, args);
+            }
+        }).start();*/
+
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //执行定时任务
+                Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
+                    public void run() {
+                        new Win_Draw_Lose_Odds().start();
+                    }
+                }, 0, 35, TimeUnit.MINUTES);
+            }
+        }).start();*/
+    }
+
+    @Bean
+    public EmbeddedServletContainerFactory servletContainer() {
+        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
+            @Override
+            protected void postProcessContext(Context context) {
+                SecurityConstraint securityConstraint = new SecurityConstraint();
+                securityConstraint.setUserConstraint("CONFIDENTIAL");
                 SecurityCollection securityCollection = new SecurityCollection();
                 securityCollection.addPattern("/*");
                 securityConstraint.addCollection(securityCollection);
                 context.addConstraint(securityConstraint);
-			}
-		};
+            }
+        };
         tomcat.addAdditionalTomcatConnectors(httpConnector());
         return tomcat;
-	}
+    }
 
-	public Connector httpConnector(){
-	    Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-	    connector.setScheme("http");
-	    connector.setPort(80);
-	    connector.setSecure(false);
-	    connector.setRedirectPort(443);
-	    return connector;
+    public Connector httpConnector() {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        connector.setScheme("http");
+        connector.setPort(80);
+        connector.setSecure(false);
+        connector.setRedirectPort(443);
+        return connector;
     }
 }

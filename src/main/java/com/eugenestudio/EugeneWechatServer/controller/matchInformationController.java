@@ -33,4 +33,10 @@ public class matchInformationController {
     public Object findAllMatch(@PathVariable("pageNum") int pageNum,@PathVariable("pageSize") int pageSize){
         return matchInformationService.findAllMatch(pageNum,pageSize);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/search/{content}",produces = {"application/json;charset=utf-8"})
+    public Object searchContent(@PathVariable("content") String content){
+        return matchInformationService.searchContent(content);
+    }
 }

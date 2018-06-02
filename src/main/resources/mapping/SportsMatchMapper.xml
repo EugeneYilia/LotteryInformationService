@@ -40,11 +40,24 @@
     initial_draw_odds, initial_lose_odds, current_win_odds, current_draw_odds, current_lose_odds, 
     initial_win_scatter, initial_draw_scatter, initial_lose_scatter, current_win_scatter, 
     current_draw_scatter, current_lose_scatter
-  </sql>
+    </sql>
 
     <sql id="Blob_Column_List">
     process_win_json_array, process_draw_json_array, process_lose_json_array
   </sql>
+
+    <select id="selectSearchContent" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from
+        sports_match
+        where
+        league_name = #{content} or
+        host_team_name = #{content} or
+        guest_team_name = #{content}
+    </select>
 
     <select id="selectAllMatch" resultMap="BaseResultMap">
         SELECT

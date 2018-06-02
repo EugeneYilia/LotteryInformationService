@@ -31,4 +31,9 @@ public class MatchInformationServiceImpl implements MatchInformationService{
         PageHelper.startPage(pageNum,pageSize);
         return sportsMatchMapper.selectAllMatch();
     }
+
+    @Override
+    public List<SportsMatch> searchContent(String content) {
+        return sportsMatchMapper.selectSearchContent(content);
+    }
 }

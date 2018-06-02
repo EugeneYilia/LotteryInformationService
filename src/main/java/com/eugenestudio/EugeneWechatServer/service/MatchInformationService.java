@@ -10,4 +10,5 @@ public interface MatchInformationService {
     List<SportsMatch> findMatches(int startNumber,int endNumber);
     SportsBLOB findMatchArray(int id);
     List<SportsMatch> findAllMatch(int pageNum,int pageSize);
+    List<SportsMatch> searchContent(String content);
 }

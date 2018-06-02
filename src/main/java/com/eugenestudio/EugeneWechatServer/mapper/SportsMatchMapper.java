@@ -28,4 +28,5 @@ public interface SportsMatchMapper {
 
     List<SportsMatch> selectAllMatch();
 
+    List<SportsMatch> selectSearchContent(@Param("content") String content);
 }
