@@ -14,4 +14,8 @@ public interface UserInformationMapper {
     int updateByPrimaryKeySelective(UserInformation record);
 
     int updateByPrimaryKey(UserInformation record);
+
+    boolean isSignIn();
+
+    boolean signIn();
 }
