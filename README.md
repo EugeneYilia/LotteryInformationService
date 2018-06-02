@@ -1,2 +1,2 @@
 # LotteryInformationFetcher
-The lottery information fetcher.
+The lottery information service.
