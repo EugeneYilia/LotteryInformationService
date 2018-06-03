@@ -64,7 +64,7 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Override
     public void isNew(String openid) {
         if (userInformationMapper.isNew(openid) == null) {
-            userInformationMapper.insert(new UserInformation(openid, 0, 0, "-1"));
+            userInformationMapper.insert(new UserInformation(openid, 0, 0, "1998-01-11"));
         }
     }
 
